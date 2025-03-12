@@ -38,7 +38,7 @@
       <video
         ref="video"
         autoplay
-        class="w-80 h-60 border-4 border-white rounded-xl shadow-lg"
+        class="w-80 h-60 border-4 border-white rounded-xl shadow-lg transform scale-x-[-1]"
       ></video>
       <button
         @click="takePhoto"
@@ -50,12 +50,12 @@
 
     <button
       @click="goBack"
-      class="mt-6 px-8 py-4 bg-pink-500 text-white text-lg font-bold rounded-full shadow-lg hover:bg-pink-600 transition-transform transform hover:scale-105"
+      class="mt-6 px-8 py-4 bg-pink-500 text-white text-lg font-bold rounded-full shadow-lg hover:bg-pink-600 transition-transform transform hover:scale-105 mb-24"
     >
       กลับไปหน้าแรก 💜
     </button>
     <div
-      class="absolute bottom-0 left-0 w-full h-16 bg-pink-500 shadow-lg flex justify-center items-center text-white text-lg font-semibold rounded-t-xl"
+      class="absolute bottom-0 left-0 w-full h-16 bg-pink-500 shadow-lg flex justify-center items-center text-white text-lg font-semibold rounded-t-xl mt-24"
     >
       🎀 Best Moments Together 🎀
     </div>
@@ -87,8 +87,12 @@ const takePhoto = () => {
     canvas.width = video.value.videoWidth;
     canvas.height = video.value.videoHeight;
     const ctx = canvas.getContext("2d");
+
     if (ctx) {
+      ctx.translate(canvas.width, 0); // ย้ายจุดเริ่มต้นของ canvas ไปขวาสุด
+      ctx.scale(-1, 1); // พลิกภาพในแนวนอน
       ctx.drawImage(video.value, 0, 0, canvas.width, canvas.height);
+
       images.value.push(canvas.toDataURL("image/png"));
     }
   }
