@@ -43,7 +43,7 @@
         <video
           ref="video"
           autoplay
-          class="w-full border-4 border-white rounded-lg shadow-lg transform scale-x-[-1]"
+          class="w-full border-4 border-white rounded-lg shadow-lg"
         ></video>
         <button
           @click="takePhoto"
@@ -56,7 +56,7 @@
 
     <button
       @click="toggleMusic"
-      class="fixed bottom-4 right-4 px-6 py-3 bg-yellow-500 text-white font-bold rounded-full shadow-lg hover:bg-yellow-600 transition-transform transform hover:scale-110 active:scale-95"
+      class="fixed bottom-4 left-4 px-6 py-3 bg-yellow-500 text-white font-bold rounded-full shadow-lg hover:bg-yellow-600 transition-transform transform hover:scale-110 active:scale-95"
     >
       🎵 {{ isPlaying ? "ปิดเพลง" : "เปิดเพลง" }}
     </button>
@@ -86,7 +86,9 @@ const video = ref<HTMLVideoElement | null>(null);
 const openCamera = async () => {
   showCamera.value = true;
   const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-  if (video.value) video.value.srcObject = stream;
+  if (video.value) {
+    video.value.srcObject = stream;
+  }
 };
 
 const takePhoto = () => {
@@ -97,8 +99,6 @@ const takePhoto = () => {
     const ctx = canvas.getContext("2d");
 
     if (ctx) {
-      ctx.translate(canvas.width, 0);
-      ctx.scale(-1, 1);
       ctx.drawImage(video.value, 0, 0, canvas.width, canvas.height);
       images.value.push(canvas.toDataURL("image/png"));
     }
