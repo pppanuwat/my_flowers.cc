@@ -10,7 +10,7 @@
 
     <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 mt-20 w-full px-4">
       <div
-        @click="rounterTo"
+        @click="routerTo"
         v-for="(image, index) in images"
         :key="index"
         class="relative group overflow-hidden rounded-lg shadow-lg border-4 border-white transition-all transform hover:scale-105 hover:rotate-1 hover:shadow-2xl"
@@ -43,7 +43,7 @@
         <video
           ref="video"
           autoplay
-          class="w-full border-4 border-white rounded-lg shadow-lg"
+          class="w-full border-4 border-white rounded-lg shadow-lg mirrored"
         ></video>
         <button
           @click="takePhoto"
@@ -73,12 +73,14 @@
 </template>
 
 <script setup lang="ts">
+
 const router = useRouter();
-const images = ref<any>([
+const images = ref<string[]>([
   "https://cdn.pixabay.com/photo/2023/09/13/07/29/ghost-8250317_640.png",
   "https://i.pinimg.com/736x/ee/13/e3/ee13e3e1e7de654b62f4d2e364d025cb.jpg",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR8Xq_-VarEZwOMCkqGQyr_L4xCMu_YPe79ZPV0swoxiFsAjFR4rw2znptP4QWOWE4tGAk&usqp=CAU",
 ]);
+
 const isPlaying = ref(true);
 const showCamera = ref(false);
 const video = ref<HTMLVideoElement | null>(null);
@@ -99,7 +101,11 @@ const takePhoto = () => {
     const ctx = canvas.getContext("2d");
 
     if (ctx) {
+      // กลับด้านภาพก่อนวาดลง canvas
+      ctx.translate(canvas.width, 0);
+      ctx.scale(-1, 1);
       ctx.drawImage(video.value, 0, 0, canvas.width, canvas.height);
+
       images.value.push(canvas.toDataURL("image/png"));
     }
   }
@@ -118,11 +124,8 @@ const toggleMusic = () => {
   isPlaying.value = !isPlaying.value;
 };
 
-const rounterTo = () => {
+const routerTo = () => {
   router.push("/dump");
-};
-const goBack = () => {
-  router.push("/");
 };
 </script>
 
@@ -154,5 +157,10 @@ const goBack = () => {
 
 .animate-wiggle {
   animation: wiggle 0.5s infinite alternate ease-in-out;
+}
+
+/* ทำให้วิดีโอกลับด้าน */
+.mirrored {
+  transform: scaleX(-1);
 }
 </style>
