@@ -11,8 +11,8 @@
         </button>
         <button
           ref="noButton"
-          class="px-6 py-2 bg-red-500 text-white font-bold rounded-lg relative"
-          :class="noButtonClass"
+          class="px-6 py-2 bg-red-500 text-white font-bold rounded-lg"
+          :style="noButtonStyle"
           @mouseover="moveNoButton"
         >
           ไม่เป็น 💔
@@ -25,12 +25,16 @@
 <script setup lang="ts">
 
 const noButton = ref<HTMLButtonElement | null>(null);
-const noButtonClass = ref("left-0 top-0");
+const noButtonStyle = ref({ position: "relative", left: "0px", top: "0px" });
 
 const moveNoButton = () => {
-  const randomX = Math.random() * 20 - 10;
-  const randomY = Math.random() * 20 - 10;
-  noButtonClass.value = `relative translate-x-[${randomX}px] translate-y-[${randomY}px]`;
+  const randomX = Math.random() * 200 - 100;
+  const randomY = Math.random() * 200 - 100;
+  noButtonStyle.value = {
+    position: "relative",
+    left: `${randomX}px`,
+    top: `${randomY}px`,
+  };
 };
 
 const accept = () => {
@@ -40,6 +44,6 @@ const accept = () => {
 
 <style scoped>
 button {
-  transition: transform 0.3s ease;
+  transition: all 0.3s ease;
 }
 </style>
